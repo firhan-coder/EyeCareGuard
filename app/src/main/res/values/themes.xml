@@ -1,0 +1,5 @@
+<resources>
+    <style name="Theme.EyeCareGuard" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/orange_primary</item>
+    </style>
+</resources>
