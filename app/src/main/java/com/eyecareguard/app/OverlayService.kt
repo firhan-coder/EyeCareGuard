@@ -21,7 +21,13 @@ class OverlayService : Service() {
         const val CHANNEL_ID = "eyecare_overlay_channel"
         const val NOTIFICATION_ID = 1001
         const val ACTION_STOP = "com.eyecareguard.app.ACTION_STOP"
+        const val ACTION_UPDATE = "com.eyecareguard.app.ACTION_UPDATE"
+        const val EXTRA_INTENSITY = "extra_intensity"
+        const val EXTRA_COLOR = "extra_color"
     }
+
+    private var currentIntensity = 45
+    private var currentColor = "#FFB300"
 
     override fun onCreate() {
         super.onCreate()
@@ -29,10 +35,21 @@ class OverlayService : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        if (intent?.action == ACTION_STOP) {
-            stopOverlay()
-            return START_NOT_STICKY
+        when (intent?.action) {
+            ACTION_STOP -> {
+                stopOverlay()
+                return START_NOT_STICKY
+            }
+            ACTION_UPDATE -> {
+                currentIntensity = intent.getIntExtra(EXTRA_INTENSITY, currentIntensity)
+                currentColor = intent.getStringExtra(EXTRA_COLOR) ?: currentColor
+                updateOverlayColor()
+                return START_STICKY
+            }
         }
+
+        currentIntensity = intent?.getIntExtra(EXTRA_INTENSITY, currentIntensity) ?: currentIntensity
+        currentColor = intent?.getStringExtra(EXTRA_COLOR) ?: currentColor
 
         startForeground(NOTIFICATION_ID, buildNotification())
         showOverlay()
@@ -40,11 +57,13 @@ class OverlayService : Service() {
     }
 
     private fun showOverlay() {
-        if (overlayView != null) return
-
-        overlayView = View(this).apply {
-            setBackgroundColor(Color.parseColor("#80FF6F00"))
+        if (overlayView != null) {
+            updateOverlayColor()
+            return
         }
+
+        overlayView = View(this)
+        updateOverlayColor()
 
         val layoutType = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
@@ -63,6 +82,22 @@ class OverlayService : Service() {
         params.gravity = Gravity.TOP or Gravity.START
 
         windowManager.addView(overlayView, params)
+    }
+
+    private fun updateOverlayColor() {
+        val alpha = (currentIntensity * 255 / 100).coerceIn(0, 255)
+        val baseColor = try {
+            Color.parseColor(currentColor)
+        } catch (e: Exception) {
+            Color.parseColor("#FFB300")
+        }
+        val colorWithAlpha = Color.argb(
+            alpha,
+            Color.red(baseColor),
+            Color.green(baseColor),
+            Color.blue(baseColor)
+        )
+        overlayView?.setBackgroundColor(colorWithAlpha)
     }
 
     private fun stopOverlay() {
