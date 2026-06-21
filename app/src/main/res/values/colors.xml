@@ -1,4 +1,8 @@
 <resources>
     <color name="orange_primary">#FF8A50</color>
     <color name="ic_launcher_background">#FFB74D</color>
+
+    <color name="tone_warm">#FFE0B2</color>
+    <color name="tone_orange">#FFB300</color>
+    <color name="tone_red">#E64A19</color>
 </resources>
