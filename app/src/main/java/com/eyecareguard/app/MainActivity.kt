@@ -1,6 +1,7 @@
 package com.eyecareguard.app
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -13,7 +14,9 @@ import com.eyecareguard.app.databinding.ActivityMainBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var prefs: SharedPreferences
     private var isOverlayOn = false
+    private var isRestOn = false
     private var intensity = 45
     private var selectedColor = "#FFB300"
 
@@ -22,19 +25,35 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.textHello.text = getString(R.string.hello_world)
+        prefs = getSharedPreferences(EyeRestService.PREFS_NAME, MODE_PRIVATE)
 
+        binding.textHello.text = getString(R.string.hello_world)
         binding.seekIntensity.progress = intensity
         updatePercentText()
 
-        binding.btnToggle.setOnClickListener {
-            if (!isOverlayOn) {
-                requestOverlayPermissionThenStart()
-            } else {
-                stopOverlay()
-            }
-        }
+        setupOverlayButton()
+        setupSeekBar()
+        setupToneButtons()
+        setupRestButton()
+        setupNotifyOptions()
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                100
+            )
+        }
+    }
+
+    private fun setupOverlayButton() {
+        binding.btnToggle.setOnClickListener {
+            if (!isOverlayOn) requestOverlayPermissionThenStart()
+            else stopOverlay()
+        }
+    }
+
+    private fun setupSeekBar() {
         binding.seekIntensity.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 intensity = progress
@@ -44,17 +63,39 @@ class MainActivity : AppCompatActivity() {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {}
         })
+    }
 
+    private fun setupToneButtons() {
         binding.btnToneWarm.setOnClickListener { selectTone("#FFE0B2") }
         binding.btnToneOrange.setOnClickListener { selectTone("#FFB300") }
         binding.btnToneRed.setOnClickListener { selectTone("#E64A19") }
+    }
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
-                100
-            )
+    private fun setupRestButton() {
+        binding.btnToggleRest.setOnClickListener {
+            if (!isRestOn) {
+                val intent = Intent(this, EyeRestService::class.java)
+                startForegroundService(intent)
+                isRestOn = true
+            } else {
+                val intent = Intent(this, EyeRestService::class.java)
+                intent.action = EyeRestService.ACTION_STOP
+                startService(intent)
+                isRestOn = false
+            }
+            updateRestButtonText()
+        }
+    }
+
+    private fun setupNotifyOptions() {
+        binding.switchSound.isChecked = prefs.getBoolean(EyeRestService.KEY_SOUND, true)
+        binding.switchVibrate.isChecked = prefs.getBoolean(EyeRestService.KEY_VIBRATE, true)
+
+        binding.switchSound.setOnCheckedChangeListener { _, isChecked ->
+            prefs.edit().putBoolean(EyeRestService.KEY_SOUND, isChecked).apply()
+        }
+        binding.switchVibrate.setOnCheckedChangeListener { _, isChecked ->
+            prefs.edit().putBoolean(EyeRestService.KEY_VIBRATE, isChecked).apply()
         }
     }
 
@@ -91,6 +132,7 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         updateButtonText()
+        updateRestButtonText()
     }
 
     private fun startOverlay() {
@@ -112,10 +154,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateButtonText() {
-        binding.btnToggle.text = if (isOverlayOn) {
-            "ปิดโหมดถนอมสายตา"
-        } else {
-            "เปิดโหมดถนอมสายตา"
-        }
+        binding.btnToggle.text = if (isOverlayOn) "ปิดโหมดถนอมสายตา" else "เปิดโหมดถนอมสายตา"
+    }
+
+    private fun updateRestButtonText() {
+        binding.btnToggleRest.text = if (isRestOn) "ปิดแจ้งเตือน 20-20-20" else "เปิดแจ้งเตือน 20-20-20"
     }
 }
