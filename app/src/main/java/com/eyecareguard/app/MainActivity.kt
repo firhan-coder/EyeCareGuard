@@ -164,9 +164,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-        super.onResume()
-        updateButtonText()
-        updateRestButtonText()
+    super.onResume()
+
+    // โหลดค่าล่าสุดที่อาจถูกปรับจากหน้าแบบทดสอบความล้าตา
+    intensity = prefs.getInt("saved_intensity", intensity)
+    selectedColor = prefs.getString("saved_color", selectedColor) ?: selectedColor
+    binding.seekIntensity.progress = intensity
+    updatePercentText()
+
+    updateButtonText()
+    updateRestButtonText()
+
         val filter = IntentFilter(EyeRestService.ACTION_TICK)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             registerReceiver(tickReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
