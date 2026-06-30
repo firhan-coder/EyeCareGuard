@@ -20,6 +20,8 @@ class EyeRestService : Service() {
         const val CHANNEL_ID = "eye_rest_channel"
         const val NOTIFICATION_ID = 2001
         const val ACTION_STOP = "com.eyecareguard.app.ACTION_STOP_REST"
+        const val ACTION_TICK = "com.eyecareguard.app.ACTION_REST_TICK"
+        const val EXTRA_MILLIS_LEFT = "extra_millis_left"
         const val INTERVAL_MS = 20L * 60 * 1000
         const val PREFS_NAME = "eyecare_prefs"
         const val KEY_SOUND = "notify_sound"
@@ -59,13 +61,27 @@ class EyeRestService : Service() {
     private fun startMinuteUpdater() {
         minuteTimer?.cancel()
         minutesLeft = 20
-        minuteTimer = object : CountDownTimer(INTERVAL_MS, 60 * 1000) {
+        minuteTimer = object : CountDownTimer(INTERVAL_MS, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                minutesLeft = (millisUntilFinished / 60000).toInt() + 1
-                updateOngoingNotification()
+                minutesLeft = Math.ceil(millisUntilFinished / 60000.0).toInt()
+                sendTickBroadcast(millisUntilFinished)
+                if (millisUntilFinished % 60000 < 1000) {
+                    updateOngoingNotification()
+                }
             }
-            override fun onFinish() {}
+            override fun onFinish() {
+                minutesLeft = 0
+                sendTickBroadcast(0)
+            }
         }.start()
+    }
+
+    private fun sendTickBroadcast(millisLeft: Long) {
+        val intent = Intent(ACTION_TICK).apply {
+            putExtra(EXTRA_MILLIS_LEFT, millisLeft)
+            setPackage(packageName)
+        }
+        sendBroadcast(intent)
     }
 
     private fun updateOngoingNotification() {
