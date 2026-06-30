@@ -14,7 +14,13 @@
         android:supportsRtl="true">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".MainActivity"<activity
+    android:name=".EyeTestActivity"
+    android:exported="false" />
+<activity
+    android:name=".EyeTestResultActivity"
+    android:exported="false" />
+
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
