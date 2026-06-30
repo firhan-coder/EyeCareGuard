@@ -1,6 +1,9 @@
 package com.eyecareguard.app
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
@@ -19,6 +22,13 @@ class MainActivity : AppCompatActivity() {
     private var isRestOn = false
     private var intensity = 45
     private var selectedColor = "#FFB300"
+
+    private val tickReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val millisLeft = intent?.getLongExtra(EyeRestService.EXTRA_MILLIS_LEFT, 0) ?: 0
+            updateCountdownText(millisLeft)
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,6 +92,7 @@ class MainActivity : AppCompatActivity() {
                 intent.action = EyeRestService.ACTION_STOP
                 startService(intent)
                 isRestOn = false
+                binding.textCountdown.text = "พักสายตาใน --:--"
             }
             updateRestButtonText()
         }
@@ -106,6 +117,17 @@ class MainActivity : AppCompatActivity() {
 
     private fun updatePercentText() {
         binding.textPercent.text = "กรองแสงสีฟ้าได้ ${intensity}%"
+    }
+
+    private fun updateCountdownText(millisLeft: Long) {
+        val totalSeconds = millisLeft / 1000
+        val minutes = totalSeconds / 60
+        val seconds = totalSeconds % 60
+        binding.textCountdown.text = if (isRestOn) {
+            String.format("พักสายตาใน %02d:%02d", minutes, seconds)
+        } else {
+            "พักสายตาใน --:--"
+        }
     }
 
     private fun sendUpdateToService() {
@@ -133,6 +155,17 @@ class MainActivity : AppCompatActivity() {
         super.onResume()
         updateButtonText()
         updateRestButtonText()
+        val filter = IntentFilter(EyeRestService.ACTION_TICK)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            registerReceiver(tickReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
+        } else {
+            registerReceiver(tickReceiver, filter)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        unregisterReceiver(tickReceiver)
     }
 
     private fun startOverlay() {
