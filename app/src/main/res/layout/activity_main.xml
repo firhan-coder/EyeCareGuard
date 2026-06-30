@@ -96,6 +96,16 @@
             android:layout_marginBottom="24dp"
             android:background="#CCCCCC" />
 
+        <TextView
+            android:id="@+id/textCountdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:text="พักสายตาใน --:--" />
+
         <Button
             android:id="@+id/btnToggleRest"
             android:layout_width="match_parent"
@@ -116,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="16sp"
-                android:text="เสยงแจ้งเตือน" />
+                android:text="เสียงแจ้งเตือน" />
 
             <Switch
                 android:id="@+id/switchSound"
