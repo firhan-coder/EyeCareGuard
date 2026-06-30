@@ -40,7 +40,7 @@
             android:layout_marginTop="4dp"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:text="กรองแสงสีฟ้าได้ 0%" />
+            android:text="กรองแสงสีฟ้าได 0%" />
 
         <SeekBar
             android:id="@+id/seekIntensity"
@@ -55,7 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:textSize="16sp"
-            android:text="เลือกโทนสี" />
+            android:text="เลอกโทนสี" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -151,19 +151,19 @@
 
             <Switch
                 android:id="@+id/switchVibrate"
-                <Button
-    android:id="@+id/btnEyeTest"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="24dp"
-    android:padding="18dp"
-    android:textSize="16sp"
-    android:text="ทดสอบความล้าตา" />
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btnEyeTest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:padding="18dp"
+            android:textSize="16sp"
+            android:text="ทดสอบความล้าตา" />
 
     </LinearLayout>
 
