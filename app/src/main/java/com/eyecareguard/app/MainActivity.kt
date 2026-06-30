@@ -38,6 +38,11 @@ class MainActivity : AppCompatActivity() {
         prefs = getSharedPreferences(EyeRestService.PREFS_NAME, MODE_PRIVATE)
 
         binding.textHello.text = getString(R.string.hello_world)
+
+        // โหลดค่าที่บันทึกไว้จากแบบทดสอบความล้าตา (ถ้ามี)
+        intensity = prefs.getInt("saved_intensity", 45)
+        selectedColor = prefs.getString("saved_color", "#FFB300") ?: "#FFB300"
+
         binding.seekIntensity.progress = intensity
         updatePercentText()
 
@@ -47,7 +52,6 @@ class MainActivity : AppCompatActivity() {
         setupRestButton()
         setupNotifyOptions()
         setupEyeTestButton()
-
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.requestPermissions(
@@ -99,12 +103,6 @@ class MainActivity : AppCompatActivity() {
             updateRestButtonText()
         }
     }
-private fun setupEyeTestButton() {
-    binding.btnEyeTest.setOnClickListener {
-        startActivity(Intent(this, EyeTestActivity::class.java))
-    }
-}
-
 
     private fun setupNotifyOptions() {
         binding.switchSound.isChecked = prefs.getBoolean(EyeRestService.KEY_SOUND, true)
@@ -115,6 +113,12 @@ private fun setupEyeTestButton() {
         }
         binding.switchVibrate.setOnCheckedChangeListener { _, isChecked ->
             prefs.edit().putBoolean(EyeRestService.KEY_VIBRATE, isChecked).apply()
+        }
+    }
+
+    private fun setupEyeTestButton() {
+        binding.btnEyeTest.setOnClickListener {
+            startActivity(Intent(this, EyeTestActivity::class.java))
         }
     }
 
