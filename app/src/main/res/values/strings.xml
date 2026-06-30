@@ -1,4 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">EyeCareGuard</string>
-    <string name="hello_world">สวัสดี! EyeCareGuard พร้อมแล้ว 👀</string>
+    <string name="app_name">Eyecare</string>
+    <string name="hello_world">สวัสดี! Eyecare พร้อมแล้ว 👀</string>
 </resources>
