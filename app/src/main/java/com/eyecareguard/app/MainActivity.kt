@@ -46,6 +46,8 @@ class MainActivity : AppCompatActivity() {
         setupToneButtons()
         setupRestButton()
         setupNotifyOptions()
+        setupEyeTestButton()
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.requestPermissions(
@@ -97,6 +99,12 @@ class MainActivity : AppCompatActivity() {
             updateRestButtonText()
         }
     }
+private fun setupEyeTestButton() {
+    binding.btnEyeTest.setOnClickListener {
+        startActivity(Intent(this, EyeTestActivity::class.java))
+    }
+}
+
 
     private fun setupNotifyOptions() {
         binding.switchSound.isChecked = prefs.getBoolean(EyeRestService.KEY_SOUND, true)
