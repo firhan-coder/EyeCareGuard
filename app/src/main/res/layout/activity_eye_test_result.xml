@@ -30,8 +30,27 @@
         android:textSize="16sp"
         android:gravity="center"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="16dp"
         android:text="คำแนะนำ" />
+
+    <TextView
+        android:id="@+id/textRecommendedFilter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="32dp"
+        android:text="แนะนำกรองแสง 0%" />
+
+    <Button
+        android:id="@+id/btnApplyFilter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="18dp"
+        android:textSize="16sp"
+        android:layout_marginBottom="12dp"
+        android:text="ปรับให้อัตโนมัติเลย" />
 
     <Button
         android:id="@+id/btnBackToMain"
