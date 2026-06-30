@@ -17,7 +17,9 @@ class EyeRestService : Service() {
     private var minutesLeft = 20
 
     companion object {
-        const val CHANNEL_ID = "eye_rest_channel"
+        const val CHANNEL_ID_ONGOING = "eye_rest_channel"
+        const val CHANNEL_ID_ALERT_SOUND = "eye_rest_alert_sound"
+        const val CHANNEL_ID_ALERT_SILENT = "eye_rest_alert_silent"
         const val NOTIFICATION_ID = 2001
         const val ACTION_STOP = "com.eyecareguard.app.ACTION_STOP_REST"
         const val ACTION_TICK = "com.eyecareguard.app.ACTION_REST_TICK"
@@ -31,6 +33,7 @@ class EyeRestService : Service() {
     override fun onCreate() {
         super.onCreate()
         prefs = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        createAlertChannels()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -43,6 +46,37 @@ class EyeRestService : Service() {
         startTimer()
         startMinuteUpdater()
         return START_STICKY
+    }
+
+    private fun createAlertChannels() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val manager = getSystemService(NotificationManager::class.java)
+
+            // ลบ channel เก่าทิ้งก่อน เผื่อมีของเดิมค้างอยู่ที่ตั้งค่าผิด
+            manager.deleteNotificationChannel(CHANNEL_ID_ALERT_SOUND)
+            manager.deleteNotificationChannel(CHANNEL_ID_ALERT_SILENT)
+
+            val soundChannel = NotificationChannel(
+                CHANNEL_ID_ALERT_SOUND, "พักสายตา (มีเสียง)", NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                enableVibration(true)
+                enableLights(true)
+            }
+            manager.createNotificationChannel(soundChannel)
+
+            val silentChannel = NotificationChannel(
+                CHANNEL_ID_ALERT_SILENT, "พักสายตา (ไม่มีเสียง)", NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                setSound(null, null)
+                enableVibration(false)
+            }
+            manager.createNotificationChannel(silentChannel)
+
+            val ongoingChannel = NotificationChannel(
+                CHANNEL_ID_ONGOING, "พักสายตา 20-20-20 (สถานะ)", NotificationManager.IMPORTANCE_LOW
+            )
+            manager.createNotificationChannel(ongoingChannel)
+        }
     }
 
     private fun startTimer() {
@@ -93,15 +127,7 @@ class EyeRestService : Service() {
         val useSound = prefs.getBoolean(KEY_SOUND, true)
         val useVibrate = prefs.getBoolean(KEY_VIBRATE, true)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val importance = if (useSound) NotificationManager.IMPORTANCE_HIGH
-                            else NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(CHANNEL_ID, "พักสายตา 20-20-20", importance)
-            channel.enableVibration(useVibrate)
-            if (!useSound) channel.setSound(null, null)
-            val manager = getSystemService(NotificationManager::class.java)
-            manager.createNotificationChannel(channel)
-        }
+        val channelId = if (useSound || useVibrate) CHANNEL_ID_ALERT_SOUND else CHANNEL_ID_ALERT_SILENT
 
         val openIntent = Intent(this, RestReminderActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -111,29 +137,23 @@ class EyeRestService : Service() {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+        val builder = NotificationCompat.Builder(this, channelId)
             .setContentTitle("ถึงเวลาพักสายตาแล้ว 👀")
             .setContentText("มองไกล 20 ฟุต เป็นเวลา 20 วินาที")
             .setSmallIcon(android.R.drawable.ic_menu_view)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .setPriority(if (useSound) NotificationCompat.PRIORITY_HIGH else NotificationCompat.PRIORITY_DEFAULT)
-            .build()
+
+        if (useVibrate) {
+            builder.setVibrate(longArrayOf(0, 400, 200, 400))
+        }
 
         val manager = getSystemService(NotificationManager::class.java)
-        manager.notify(NOTIFICATION_ID + 1, notification)
+        manager.notify(NOTIFICATION_ID + 1, builder.build())
     }
 
     private fun buildOngoingNotification(minutes: Int): Notification {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(
-                CHANNEL_ID, "พักสายตา 20-20-20",
-                NotificationManager.IMPORTANCE_LOW
-            )
-            val manager = getSystemService(NotificationManager::class.java)
-            manager.createNotificationChannel(channel)
-        }
-
         val stopIntent = Intent(this, EyeRestService::class.java).apply {
             action = ACTION_STOP
         }
@@ -142,7 +162,7 @@ class EyeRestService : Service() {
             PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
         )
 
-        return NotificationCompat.Builder(this, CHANNEL_ID)
+        return NotificationCompat.Builder(this, CHANNEL_ID_ONGOING)
             .setContentTitle("แจ้งเตือนพักสายตา 20-20-20")
             .setContentText("พักสายตาใน $minutes นาที")
             .setSmallIcon(android.R.drawable.ic_menu_view)
