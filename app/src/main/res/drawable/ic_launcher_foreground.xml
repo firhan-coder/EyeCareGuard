@@ -5,43 +5,42 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- ตาซ้าย -->
+    <!-- ตาซ้าย (วงกลมขาว) -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M35,38 C24,38 15,47 15,58 C15,69 24,78 35,78 C46,78 55,69 55,58 C55,47 46,38 35,38 Z" />
+        android:pathData="M34,30 C22,30 12,40 12,52 C12,64 22,74 34,74 C46,74 56,64 56,52 C56,40 46,30 34,30 Z" />
 
-    <!-- ตาขวา -->
+    <!-- ตาขวา (วงกลมขาว) -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M73,38 C62,38 53,47 53,58 C53,69 62,78 73,78 C84,78 93,69 93,58 C93,47 84,38 73,38 Z" />
+        android:pathData="M74,30 C62,30 52,40 52,52 C52,64 62,74 74,74 C86,74 96,64 96,52 C96,40 86,30 74,30 Z" />
 
     <!-- ดาวตาซ้าย -->
     <path
         android:fillColor="#FFD700"
-        android:pathData="M35,52 L37,56 L41,56 L38,59 L39,63 L35,61 L31,63 L32,59 L29,56 L33,56 Z" />
+        android:pathData="M34,44 L36,49 L41,49 L37,52 L39,57 L34,54 L29,57 L31,52 L27,49 L32,49 Z" />
 
     <!-- ดาวตาขวา -->
     <path
         android:fillColor="#FFD700"
-        android:pathData="M73,52 L75,56 L79,56 L76,59 L77,63 L73,61 L69,63 L70,59 L67,56 L71,56 Z" />
+        android:pathData="M74,44 L76,49 L81,49 L77,52 L79,57 L74,54 L69,57 L71,52 L67,49 L72,49 Z" />
 
     <!-- แก้มซ้าย -->
     <path
-        android:fillColor="#FFB3BA"
-        android:fillAlpha="0.7"
-        android:pathData="M22,70 C22,70 18,66 20,62 C22,58 28,60 28,65 C28,70 22,70 22,70 Z" />
+        android:fillColor="#FFCCCC"
+        android:pathData="M18,64 C18,64 14,58 18,55 C22,52 26,56 24,61 C22,66 18,64 18,64 Z" />
 
     <!-- แก้มขวา -->
     <path
-        android:fillColor="#FFB3BA"
-        android:fillAlpha="0.7"
-        android:pathData="M86,70 C86,70 90,66 88,62 C86,58 80,60 80,65 C80,70 86,70 86,70 Z" />
+        android:fillColor="#FFCCCC"
+        android:pathData="M90,64 C90,64 94,58 90,55 C86,52 82,56 84,61 C86,66 90,64 90,64 Z" />
 
     <!-- รอยยิ้ม -->
     <path
         android:strokeColor="#FFFFFF"
-        android:strokeWidth="3"
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
         android:fillColor="#00000000"
-        android:pathData="M38,86 C46,92 62,92 70,86" />
+        android:pathData="M36,82 Q54,92 72,82" />
 
 </vector>
