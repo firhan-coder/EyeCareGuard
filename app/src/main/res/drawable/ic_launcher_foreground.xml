@@ -8,39 +8,59 @@
     <!-- ตาซ้าย (วงกลมขาว) -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M33,28 C20,28 10,38 10,51 C10,64 20,74 33,74 C46,74 56,64 56,51 C56,38 46,28 33,28 Z" />
+        android:pathData="M33,26 C19,26 8,37 8,51 C8,65 19,76 33,76 C47,76 58,65 58,51 C58,37 47,26 33,26 Z" />
+
+    <!-- ม่านตาซ้าย (สีส้มเข้ม) -->
+    <path
+        android:fillColor="#E05500"
+        android:pathData="M33,40 C27,40 22,45 22,51 C22,57 27,62 33,62 C39,62 44,57 44,51 C44,45 39,40 33,40 Z" />
+
+    <!-- รูม่านตาซ้าย (ดำ) -->
+    <path
+        android:fillColor="#222222"
+        android:pathData="M33,45 C30,45 28,47 28,51 C28,55 30,57 33,57 C36,57 38,55 38,51 C38,47 36,45 33,45 Z" />
+
+    <!-- แสงตาซ้าย -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M35,47 C35,47 37,49 36,50 C35,48 35,47 35,47 Z" />
 
     <!-- ตาขวา (วงกลมขาว) -->
     <path
         android:fillColor="#FFFFFF"
-        android:pathData="M75,28 C62,28 52,38 52,51 C52,64 62,74 75,74 C88,74 98,64 98,51 C98,38 88,28 75,28 Z" />
+        android:pathData="M75,26 C61,26 50,37 50,51 C50,65 61,76 75,76 C89,76 100,65 100,51 C100,37 89,26 75,26 Z" />
 
-    <!-- ดาวตาซ้าย -->
+    <!-- ม่านตาขวา (สีส้มเข้ม) -->
     <path
-        android:fillColor="#FFD700"
-        android:pathData="M33,42 L35.5,48 L42,48 L37,52 L39,58 L33,54 L27,58 L29,52 L24,48 L30.5,48 Z" />
+        android:fillColor="#E05500"
+        android:pathData="M75,40 C69,40 64,45 64,51 C64,57 69,62 75,62 C81,62 86,57 86,51 C86,45 81,40 75,40 Z" />
 
-    <!-- ดาวตาขวา -->
+    <!-- รูม่านตาขวา (ดำ) -->
     <path
-        android:fillColor="#FFD700"
-        android:pathData="M75,42 L77.5,48 L84,48 L79,52 L81,58 L75,54 L69,58 L71,52 L66,48 L72.5,48 Z" />
+        android:fillColor="#222222"
+        android:pathData="M75,45 C72,45 70,47 70,51 C70,55 72,57 75,57 C78,57 80,55 80,51 C80,47 78,45 75,45 Z" />
 
-    <!-- แก้มซ้าย (ชมพูเข้มขึ้น) -->
+    <!-- แสงตาขวา -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M77,47 C77,47 79,49 78,50 C77,48 77,47 77,47 Z" />
+
+    <!-- แก้มซ้าย -->
     <path
         android:fillColor="#FF9999"
-        android:pathData="M16,66 C16,60 20,56 25,58 C30,60 30,68 25,70 C20,72 16,72 16,66 Z" />
+        android:pathData="M12,66 C12,60 17,56 22,59 C27,62 26,70 20,71 C14,72 12,72 12,66 Z" />
 
-    <!-- แก้มขวา (ชมพูเข้มขึ้น) -->
+    <!-- แก้มขวา -->
     <path
         android:fillColor="#FF9999"
-        android:pathData="M92,66 C92,60 88,56 83,58 C78,60 78,68 83,70 C88,72 92,72 92,66 Z" />
+        android:pathData="M96,66 C96,60 91,56 86,59 C81,62 82,70 88,71 C94,72 96,72 96,66 Z" />
 
-    <!-- รอยยิ้ม (เส้นหนาขึ้น ชัดขึ้น) -->
+    <!-- รอยยิ้ม -->
     <path
-        android:strokeColor="#FF8A50"
+        android:strokeColor="#FFFFFF"
         android:strokeWidth="5"
         android:strokeLineCap="round"
         android:fillColor="#00000000"
-        android:pathData="M30,84 Q54,98 78,84" />
+        android:pathData="M32,86 Q54,100 76,86" />
 
 </vector>
