@@ -39,7 +39,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.textHello.text = getString(R.string.hello_world)
 
-        // โหลดค่าที่บันทึกไว้จากแบบทดสอบความล้าตา (ถ้ามี)
         intensity = prefs.getInt("saved_intensity", 45)
         selectedColor = prefs.getString("saved_color", "#FFB300") ?: "#FFB300"
 
@@ -98,7 +97,7 @@ class MainActivity : AppCompatActivity() {
                 intent.action = EyeRestService.ACTION_STOP
                 startService(intent)
                 isRestOn = false
-                binding.textCountdown.text = "พักสายตาใน --:--"
+                binding.textCountdown.text = getString(R.string.countdown_default)
             }
             updateRestButtonText()
         }
@@ -128,7 +127,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updatePercentText() {
-        binding.textPercent.text = "กรองแสงสีฟ้าได้ ${intensity}%"
+        binding.textPercent.text = getString(R.string.label_blue_light, intensity)
     }
 
     private fun updateCountdownText(millisLeft: Long) {
@@ -136,9 +135,9 @@ class MainActivity : AppCompatActivity() {
         val minutes = totalSeconds / 60
         val seconds = totalSeconds % 60
         binding.textCountdown.text = if (isRestOn) {
-            String.format("พักสายตาใน %02d:%02d", minutes, seconds)
+            String.format("%02d:%02d", minutes, seconds)
         } else {
-            "พักสายตาใน --:--"
+            getString(R.string.countdown_default)
         }
     }
 
@@ -164,17 +163,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
-    super.onResume()
+        super.onResume()
 
-    // โหลดค่าล่าสุดที่อาจถูกปรับจากหน้าแบบทดสอบความล้าตา
-    intensity = prefs.getInt("saved_intensity", intensity)
-    selectedColor = prefs.getString("saved_color", selectedColor) ?: selectedColor
-    binding.seekIntensity.progress = intensity
-    updatePercentText()
+        intensity = prefs.getInt("saved_intensity", intensity)
+        selectedColor = prefs.getString("saved_color", selectedColor) ?: selectedColor
+        binding.seekIntensity.progress = intensity
+        updatePercentText()
 
-    updateButtonText()
-    updateRestButtonText()
-
+        updateButtonText()
+        updateRestButtonText()
         val filter = IntentFilter(EyeRestService.ACTION_TICK)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             registerReceiver(tickReceiver, filter, Context.RECEIVER_NOT_EXPORTED)
@@ -207,10 +204,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateButtonText() {
-        binding.btnToggle.text = if (isOverlayOn) "ปิดโหมดถนอมสายตา" else "เปิดโหมดถนอมสายตา"
+        binding.btnToggle.text = if (isOverlayOn)
+            getString(R.string.btn_toggle_off)
+        else
+            getString(R.string.btn_toggle_on)
     }
 
     private fun updateRestButtonText() {
-        binding.btnToggleRest.text = if (isRestOn) "ปิดแจ้งเตือน 20-20-20" else "เปิดแจ้งเตือน 20-20-20"
+        binding.btnToggleRest.text = if (isRestOn)
+            getString(R.string.btn_rest_off)
+        else
+            getString(R.string.btn_rest_on)
     }
 }
