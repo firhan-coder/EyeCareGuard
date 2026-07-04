@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFF8F4">
@@ -10,19 +11,16 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <!-- Header -->
         <TextView
             android:id="@+id/textHello"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:textStyle="bold"
             android:textColor="#E65100"
             android:gravity="center"
-            android:layout_gravity="center"
             android:layout_marginBottom="16dp" />
 
-        <!-- ปุ่มเปิด/ปิด overlay -->
         <Button
             android:id="@+id/btnToggle"
             android:layout_width="match_parent"
@@ -33,9 +31,7 @@
             android:layout_marginBottom="16dp"
             android:text="เปิดโหมดถนอมสายตา" />
 
-        <!-- Card: ความเข้มสีกรอง -->
         <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
@@ -77,9 +73,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Card: เลือกโทนสี -->
         <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
@@ -134,9 +128,7 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- Card: พักสายตา 20-20-20 -->
         <androidx.cardview.widget.CardView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
@@ -160,14 +152,12 @@
 
                 <TextView
                     android:id="@+id/textCountdown"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
                     android:textSize="36sp"
                     android:textStyle="bold"
                     android:textColor="#E65100"
                     android:gravity="center"
-                    android:layout_width="match_parent"
                     android:layout_marginBottom="12dp"
                     android:text="--:--" />
 
@@ -226,7 +216,6 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
-        <!-- ปุ่มทดสอบความล้าตา -->
         <Button
             android:id="@+id/btnEyeTest"
             android:layout_width="match_parent"
