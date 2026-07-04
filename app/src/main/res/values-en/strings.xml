@@ -1,5 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Eyecare</string>
-    <string name="hello_world">Hello! Eyecare is ready 👀</string>
+    <string name="hello_world">สวัสดี! Eyecare พร้อมแล้ว 👀</string>
+    <string name="btn_toggle_on">เปิดโหมดถนอมสายตา</string>
+    <string name="btn_toggle_off">ปิดโหมดถนอมสายตา</string>
+    <string name="label_intensity">🌡️ ความเข้มของสีกรอง</string>
+    <string name="label_blue_light">กรองแสงสีฟ้าได้ %d%%</string>
+    <string name="label_tone">🎨 เลือกโทนสี</string>
+    <string name="btn_tone_warm">อุ่น</string>
+    <string name="btn_tone_orange">ส้ม</string>
+    <string name="btn_tone_red">แดง</string>
+    <string name="label_rest">⏱️ พักสายตา 20-20-20</string>
+    <string name="countdown_default">--:--</string>
+    <string name="btn_rest_on">เปิดแจ้งเตือน 20-20-20</string>
+    <string name="btn_rest_off">ปิดแจ้งเตือน 20-20-20</string>
+    <string name="label_sound">🔔 เสียงแจ้งเตือน</string>
+    <string name="label_vibrate">📳 สั่นแจ้งเตือน</string>
+    <string name="btn_eye_test">🔍 ทดสอบความล้าตา</string>
+    <string name="test_title">แบบทดสอบความล้าตา</string>
+    <string name="btn_submit">ดูผลลัพธ์</string>
+    <string name="btn_apply_filter">ปรับให้อัตโนมัติเลย</string>
+    <string name="btn_back">กลับหน้าหลัก</string>
+    <string name="rest_notification_title">แจ้งเตือนพักสายตา 20-20-20</string>
+    <string name="rest_notification_text">พักสายตาใน %d นาที</string>
+    <string name="rest_alert_title">ถึงเวลาพักสายตาแล้ว 👀</string>
+    <string name="rest_alert_text">มองไกล 20 ฟุต เป็นเวลา 20 วินาที</string>
+    <string name="btn_stop">ปิด</string>
+    <string name="label_rest_in">พักสายตาใน</string>
 </resources>
