@@ -6,41 +6,31 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.VIBRATE" />
-<service
-    android:name=".EyeCareTileService"
-    android:exported="true"
-    android:label="Eyecare"
-    android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
-    <intent-filter>
-        <action android:name="android.service.quicksettings.action.QS_TILE" />
-    </intent-filter>
-</service>
 
     <application
-    android:allowBackup="true"
-    android:icon="@mipmap/ic_launcher"
-    android:roundIcon="@mipmap/ic_launcher_round"
-    android:label="@string/app_name"
-    android:theme="@style/Theme.EyeCareGuard"
-    android:supportsRtl="true">
-
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:label="@string/app_name"
+        android:theme="@style/Theme.EyeCareGuard"
+        android:supportsRtl="true">
 
         <activity
-    android:name=".MainActivity"
-    android:exported="true">
-    <intent-filter>
-        <action android:name="android.intent.action.MAIN" />
-        <category android:name="android.intent.category.LAUNCHER" />
-    </intent-filter>
-</activity>
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
-<activity
-    android:name=".EyeTestActivity"
-    android:exported="false" />
-<activity
-    android:name=".EyeTestResultActivity"
-    android:exported="false" />
+        <activity
+            android:name=".EyeTestActivity"
+            android:exported="false" />
 
+        <activity
+            android:name=".EyeTestResultActivity"
+            android:exported="false" />
 
         <activity
             android:name=".RestReminderActivity"
@@ -64,6 +54,16 @@
             <property
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
                 android:value="eye rest reminder timer" />
+        </service>
+
+        <service
+            android:name=".EyeCareTileService"
+            android:exported="true"
+            android:label="Eyecare"
+            android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+            <intent-filter>
+                <action android:name="android.service.quicksettings.action.QS_TILE" />
+            </intent-filter>
         </service>
 
     </application>
