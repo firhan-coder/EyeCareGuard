@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eyecare - Privacy Policy</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; line-height: 1.6; color: #333; }
+        h1 { color: #E65100; }
+        h2 { color: #FF8A50; }
+    </style>
+</head>
+<body>
+    <h1>Eyecare - Privacy Policy</h1>
+    <p><strong>Last updated:</strong> July 12, 2026</p>
+    <p>Eyecare ("we", "our", or "us") is developed by Firhan Studio. This Privacy Policy explains how our app handles your information.</p>
+
+    <h2>Information We Collect</h2>
+    <p>Eyecare does <strong>not</strong> collect, store, or share any personal information. All settings (filter intensity, color tone, notification preferences) are stored locally on your device only.</p>
+
+    <h2>Permissions Used</h2>
+    <ul>
+        <li><strong>SYSTEM_ALERT_WINDOW</strong> — Required to display the blue light filter overlay on your screen.</li>
+        <li><strong>FOREGROUND_SERVICE</strong> — Required to keep the filter running when the app is in the background.</li>
+        <li><strong>POST_NOTIFICATIONS</strong> — Required to send 20-20-20 eye rest reminders.</li>
+        <li><strong>VIBRATE</strong> — Required for vibration alerts during eye rest reminders.</li>
+    </ul>
+
+    <h2>Data Storage</h2>
+    <p>All data is stored locally on your device using Android SharedPreferences. We do not have access to your data and it is never transmitted to any server.</p>
+
+    <h2>Third-Party Services</h2>
+    <p>Eyecare does not use any third-party analytics, advertising, or tracking services.</p>
+
+    <h2>Children's Privacy</h2>
+    <p>Our app does not collect any information from anyone, including children under 13.</p>
+
+    <h2>Changes to This Policy</h2>
+    <p>We may update this Privacy Policy from time to time. Changes will be posted on this page.</p>
+
+    <h2>Contact Us</h2>
+    <p>If you have any questions about this Privacy Policy, please contact us at: <a href="mailto:tohsufirhan@gmail.com">tohsufirhan@gmail.com</a></p>
+</body>
+</html>
