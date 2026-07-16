@@ -27,6 +27,11 @@ jobs:
       - name: Decode Keystore
         run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/eyecare.keystore
 
+      - name: List Keystore Entries (debug)
+        env:
+          KS_PASS: ${{ secrets.KEY_STORE_PASSWORD }}
+        run: keytool -list -v -keystore app/eyecare.keystore -storepass "$KS_PASS" | grep -E "Alias name|Entry type"
+
       - name: Build Release APK
         run: ./gradlew assembleRelease
         env:
