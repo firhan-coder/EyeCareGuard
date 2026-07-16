@@ -25,8 +25,7 @@ jobs:
         run: gradle wrapper --gradle-version 8.7
 
       - name: Decode Keystore
-        run: |
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/eyecare.keystore
+        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/eyecare.keystore
 
       - name: Build Release APK
         run: ./gradlew assembleRelease
@@ -36,22 +35,10 @@ jobs:
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
       - name: Sign APK
-        run: |
-          jarsigner -verbose \
-            -sigalg SHA256withRSA \
-            -digestalg SHA-256 \
-            -keystore app/eyecare.keystore \
-            -storepass ${{ secrets.KEY_STORE_PASSWORD }} \
-            -keypass ${{ secrets.KEY_PASSWORD }} \
-            app/build/outputs/apk/release/app-release-unsigned.apk \
-            ${{ secrets.KEY_ALIAS }}
+        run: jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore app/eyecare.keystore -storepass ${{ secrets.KEY_STORE_PASSWORD }} -keypass ${{ secrets.KEY_PASSWORD }} app/build/outputs/apk/release/app-release-unsigned.apk ${{ secrets.KEY_ALIAS }}
 
       - name: Align APK
-        run: |
-          $ANDROID_HOME/build-tools/$(ls $ANDROID_HOME/build-tools | tail -1)/zipalign \
-            -v 4 \
-            app/build/outputs/apk/release/app-release-unsigned.apk \
-            app/build/outputs/apk/release/eyecare-release.apk
+        run: $ANDROID_HOME/build-tools/$(ls $ANDROID_HOME/build-tools | tail -1)/zipalign -v 4 app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/eyecare-release.apk
 
       - name: Upload Release APK
         uses: actions/upload-artifact@v4
