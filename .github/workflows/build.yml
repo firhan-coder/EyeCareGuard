@@ -34,11 +34,22 @@ jobs:
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
+      - name: List build output (debug)
+        run: find app/build/outputs/apk -type f
+
       - name: Sign APK
-        run: jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore app/eyecare.keystore -storepass ${{ secrets.KEY_STORE_PASSWORD }} -keypass ${{ secrets.KEY_PASSWORD }} app/build/outputs/apk/release/app-release-unsigned.apk ${{ secrets.KEY_ALIAS }}
+        env:
+          KS_PASS: ${{ secrets.KEY_STORE_PASSWORD }}
+          KS_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KS_KEYPASS: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          UNSIGNED_APK="app/build/outputs/apk/release/app-release-unsigned.apk"
+          jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore app/eyecare.keystore -storepass "$KS_PASS" -keypass "$KS_KEYPASS" "$UNSIGNED_APK" "$KS_ALIAS"
 
       - name: Align APK
-        run: $ANDROID_HOME/build-tools/$(ls $ANDROID_HOME/build-tools | tail -1)/zipalign -v 4 app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/eyecare-release.apk
+        run: |
+          BUILD_TOOLS_VERSION=$(ls $ANDROID_HOME/build-tools | tail -1)
+          $ANDROID_HOME/build-tools/$BUILD_TOOLS_VERSION/zipalign -v 4 app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/eyecare-release.apk
 
       - name: Upload Release APK
         uses: actions/upload-artifact@v4
