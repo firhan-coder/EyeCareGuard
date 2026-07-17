@@ -27,11 +27,6 @@ jobs:
       - name: Decode Keystore
         run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > app/eyecare.keystore
 
-      - name: List Keystore Entries (debug)
-        env:
-          KS_PASS: ${{ secrets.KEY_STORE_PASSWORD }}
-        run: keytool -list -v -keystore app/eyecare.keystore -storepass "$KS_PASS" | grep -E "Alias name|Entry type"
-
       - name: Build Release APK
         run: ./gradlew assembleRelease
         env:
@@ -39,22 +34,23 @@ jobs:
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
-      - name: List build output (debug)
-        run: find app/build/outputs/apk -type f
+      - name: Align APK
+        run: |
+          BUILD_TOOLS_VERSION=$(ls $ANDROID_HOME/build-tools | tail -1)
+          echo "BUILD_TOOLS_VERSION=$BUILD_TOOLS_VERSION" >> $GITHUB_ENV
+          $ANDROID_HOME/build-tools/$BUILD_TOOLS_VERSION/zipalign -v 4 app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/eyecare-aligned.apk
 
-      - name: Sign APK
+      - name: Sign APK with apksigner
         env:
           KS_PASS: ${{ secrets.KEY_STORE_PASSWORD }}
           KS_ALIAS: ${{ secrets.KEY_ALIAS }}
           KS_KEYPASS: ${{ secrets.KEY_PASSWORD }}
         run: |
-          UNSIGNED_APK="app/build/outputs/apk/release/app-release-unsigned.apk"
-          jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore app/eyecare.keystore -storepass "$KS_PASS" -keypass "$KS_KEYPASS" "$UNSIGNED_APK" "$KS_ALIAS"
+          $ANDROID_HOME/build-tools/$BUILD_TOOLS_VERSION/apksigner sign --ks app/eyecare.keystore --ks-key-alias "$KS_ALIAS" --ks-pass "pass:$KS_PASS" --key-pass "pass:$KS_KEYPASS" --out app/build/outputs/apk/release/eyecare-release.apk app/build/outputs/apk/release/eyecare-aligned.apk
 
-      - name: Align APK
+      - name: Verify APK signature (debug)
         run: |
-          BUILD_TOOLS_VERSION=$(ls $ANDROID_HOME/build-tools | tail -1)
-          $ANDROID_HOME/build-tools/$BUILD_TOOLS_VERSION/zipalign -v 4 app/build/outputs/apk/release/app-release-unsigned.apk app/build/outputs/apk/release/eyecare-release.apk
+          $ANDROID_HOME/build-tools/$BUILD_TOOLS_VERSION/apksigner verify --verbose app/build/outputs/apk/release/eyecare-release.apk
 
       - name: Upload Release APK
         uses: actions/upload-artifact@v4
