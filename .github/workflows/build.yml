@@ -34,6 +34,13 @@ jobs:
           KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
           KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
 
+      - name: Build Release AAB
+        run: ./gradlew bundleRelease
+        env:
+          KEY_STORE_PASSWORD: ${{ secrets.KEY_STORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+
       - name: Align APK
         run: |
           BUILD_TOOLS_VERSION=$(ls $ANDROID_HOME/build-tools | tail -1)
@@ -48,12 +55,23 @@ jobs:
         run: |
           $ANDROID_HOME/build-tools/$BUILD_TOOLS_VERSION/apksigner sign --ks app/eyecare.keystore --ks-key-alias "$KS_ALIAS" --ks-pass "pass:$KS_PASS" --key-pass "pass:$KS_KEYPASS" --out app/build/outputs/apk/release/eyecare-release.apk app/build/outputs/apk/release/eyecare-aligned.apk
 
-      - name: Verify APK signature (debug)
+      - name: Sign AAB with jarsigner
+        env:
+          KS_PASS: ${{ secrets.KEY_STORE_PASSWORD }}
+          KS_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KS_KEYPASS: ${{ secrets.KEY_PASSWORD }}
         run: |
-          $ANDROID_HOME/build-tools/$BUILD_TOOLS_VERSION/apksigner verify --verbose app/build/outputs/apk/release/eyecare-release.apk
+          cp app/build/outputs/bundle/release/app-release.aab app/build/outputs/bundle/release/eyecare-release.aab
+          jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore app/eyecare.keystore -storepass "$KS_PASS" -keypass "$KS_KEYPASS" app/build/outputs/bundle/release/eyecare-release.aab "$KS_ALIAS"
 
       - name: Upload Release APK
         uses: actions/upload-artifact@v4
         with:
-          name: eyecare-release
+          name: eyecare-release-apk
           path: app/build/outputs/apk/release/eyecare-release.apk
+
+      - name: Upload Release AAB
+        uses: actions/upload-artifact@v4
+        with:
+          name: eyecare-release-aab
+          path: app/build/outputs/bundle/release/eyecare-release.aab
