@@ -32,6 +32,53 @@
             android:text="@string/btn_toggle_on" />
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/cardPremium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="6dp"
+            app:cardBackgroundColor="#E65100">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="18dp">
+
+                <TextView
+                    android:id="@+id/textPremiumTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="✨ Eyecare พรีเมียม"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginBottom="6dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="ปรับสีเองได้ไม่จำกัด • ตั้งเวลาแจ้งเตือนเองได้ • ดูสถิติสุขภาพสายตา"
+                    android:textSize="13sp"
+                    android:textColor="#FFE0B2"
+                    android:layout_marginBottom="14dp" />
+
+                <Button
+                    android:id="@+id/btnGoPremium"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="14dp"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:backgroundTint="#FFFFFF"
+                    android:textColor="#E65100"
+                    android:text="ปลดล็อกโหมดพรีเมียม" />
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
@@ -67,7 +114,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:max="90"
+                    android:max="100"
                     android:progress="45" />
 
             </LinearLayout>
