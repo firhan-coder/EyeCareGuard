@@ -18,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var prefs: SharedPreferences
+    private lateinit var billingManager: BillingManager
     private var isOverlayOn = false
     private var isRestOn = false
     private var intensity = 45
@@ -51,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         setupRestButton()
         setupNotifyOptions()
         setupEyeTestButton()
+        setupBilling()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ActivityCompat.requestPermissions(
@@ -58,6 +60,38 @@ class MainActivity : AppCompatActivity() {
                 arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
                 100
             )
+        }
+    }
+
+    private fun setupBilling() {
+        billingManager = BillingManager(this) { isPremium ->
+            runOnUiThread { updatePremiumUi(isPremium) }
+        }
+        billingManager.startConnection()
+
+        binding.btnGoPremium.setOnClickListener {
+            if (billingManager.isPremium()) {
+                // ซื้อแล้ว ไม่ต้องทำอะไร (ปุ่มจะถกซ่อนอยู่แล้ว)
+            } else {
+                billingManager.launchPurchaseFlow(this)
+            }
+        }
+
+        updatePremiumUi(billingManager.isPremium())
+    }
+
+    private fun updatePremiumUi(isPremium: Boolean) {
+        if (isPremium) {
+            binding.cardPremium.visibility = android.view.View.GONE
+            binding.seekIntensity.max = 100
+        } else {
+            binding.cardPremium.visibility = android.view.View.VISIBLE
+            binding.seekIntensity.max = 90
+            if (intensity > 90) {
+                intensity = 90
+                binding.seekIntensity.progress = intensity
+                updatePercentText()
+            }
         }
     }
 
@@ -183,6 +217,11 @@ class MainActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         unregisterReceiver(tickReceiver)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        billingManager.endConnection()
     }
 
     private fun startOverlay() {
